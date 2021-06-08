@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<link rel="stylesheet" href="dist/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<link rel="shortcut icon" href="media/favicon.png" mce_href="media/favicon.ico" type="image/x-icon">
+		<title>AgendaJS</title>
+	</head>
+
+	<body>
+		<header>
+
+			<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+			  	<a class="navbar-brand" href="#">
+			  		<img class="w-100" src="media/paperclip.svg" alt="agenda">
+			  	</a>
+			  	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			    	<span class="navbar-toggler-icon"></span>
+			  	</button>
+			  	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				    <ul class="navbar-nav mr-auto">
+				      	<li class="nav-item active">
+				        	<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+				      	</li>
+				      	<li class="nav-item">
+				        	<a class="nav-link" href="#">Link</a>
+				      	</li>
+				      	<li class="nav-item dropdown">
+				        	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				          Dropdown
+				        	</a>
+				        	<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+				          		<a class="dropdown-item" href="#">Action</a>
+				          		<a class="dropdown-item" href="#">Another action</a>
+				          		<div class="dropdown-divider"></div>
+				          		<a class="dropdown-item" href="#">Something else here</a>
+				        	</div>
+				      	</li>
+				      	<li class="nav-item">
+				        	<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+				      	</li>
+				    </ul>
+			    	<form class="form-inline my-2 my-lg-0">
+			      		<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+			      		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+			    	</form>
+			  	</div>
+			</nav>
+
+		</header>
+
+		<main>
+	<!-- Button trigger modal Add Contact-->
+			<button type="button" class="btn btn-primary my-3" data-toggle="modal" data-target="#exampleModal">
+			  Launch demo modal
+			</button>
+	<!-- end Button trigger modal Add Contact-->
+
+
+			<div class="accordion" id="accordionExample">
+			  	<div class="card">
+			    	<div class="card-header" id="headingOne">
+			      		<h2 class="mb-0">
+			        		<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+			          		Collapsible Group Item #1
+			        		</button>
+			      		</h2>
+			    	</div>
+
+			    	<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+			      		<div class="card-body">
+			        	Some placeholder content for the first accordion panel. This panel is shown by default, thanks to the <code>.show</code> class.
+			      		</div>
+			    	</div>
+			  	</div>
+			  	<div class="card">
+			    	<div class="card-header" id="headingTwo">
+			      		<h2 class="mb-0">
+			        		<button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo"aria-expanded="false" aria-controls="collapseTwo">
+			          		Collapsible Group Item #2
+			        		</button>
+			      		</h2>
+			    	</div>
+			    	<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+			      		<div class="card-body">
+			        	Some placeholder content for the second accordion panel. This panel is hidden by default.
+			      		</div>
+			    	</div>
+			  	</div>
+			  	<div class="card">
+			    	<div class="card-header" id="headingThree">
+			      		<h2 class="mb-0">
+			        		<button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+			          		Collapsible Group Item #3
+			        		</button>
+			      		</h2>
+			    	</div>
+			    	<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+			      		<div class="card-body">
+			        	And lastly, the placeholder content for the third and final accordion panel. This panel is hidden by default.
+			      		</div>
+			    	</div>
+			  	</div>
+			</div>
+
+
+		</main>
+
+		<footer>
+
+			<nav class="navbar fixed-bottom navbar-expand-sm navbar-light bg-light">
+				<a class="navbar-brand" href="#">Bottom navbar</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+			    	<span class="navbar-toggler-icon"></span>
+			  	</button>
+			  	<div class="collapse navbar-collapse" id="navbarCollapse">
+				    <ul class="navbar-nav mr-auto">
+				      	<li class="nav-item active">
+				        	<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+				      	</li>
+				      	<li class="nav-item">
+				        	<a class="nav-link" href="#">Link</a>
+				      	</li>
+				      	<li class="nav-item">
+				        	<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+				      	</li>
+				      	<li class="nav-item dropup">
+				        	<a class="nav-link dropdown-toggle" href="#" id="dropdown10" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropup</a>
+				        	<div class="dropdown-menu" aria-labelledby="dropdown10">
+				          		<a class="dropdown-item" href="#">Action</a>
+				          		<a class="dropdown-item" href="#">Another action</a>
+				          		<a class="dropdown-item" href="#">Something else here</a>
+				        	</div>
+				      	</li>
+				    </ul>
+			  	</div>
+			</nav>
+
+		</footer>
+
+	<!-- Modal Add Contact-->
+			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Nuevo Contacto</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							
+							<form>
+								<div class="form-group">
+									<label for="Input1">Nombre</label>
+								  	<input type="text" class="form-control" id="Input1" placeholder="Nombre">
+								</div>
+								<div class="form-group">
+									<label for="Input2">Apellido</label>
+								    <input type="text" class="form-control" id="Input2" placeholder="Apellido">
+								</div>
+								<div class="form-group">
+								    <label for="Input3">Teléfono</label>
+								    <input type="tel" class="form-control" id="Input3" placeholder="1144772255">
+								</div>
+								<div class="form-group">
+								    <label for="Input4">e-Mail</label>
+								    <input type="email" class="form-control" id="Input4" placeholder="name@example.com">
+								</div>
+							</form>
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary">Save changes</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		<!-- <script src="js/script.js"></script> -->
+	    <script src="dist/popper.js/dist/umd/popper.min.js"></script>
+	    <script src="dist/jquery/dist/jquery.slim.min.js"></script>
+	    <script src="dist/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	</body>
+
+</html>
