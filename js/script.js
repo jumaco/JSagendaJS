@@ -28,6 +28,11 @@ function render(){
         `
         listado.appendChild(card)
     })
+
+        const padre = document.getElementById('nroContac');
+        var cuenta =`Contactos <span class="badge">${listaContactos.length}</span>`;
+        padre.innerHTML =cuenta;
+
 }
 
 
@@ -67,9 +72,33 @@ function agregar(){
 }
 
 function buscar(){
-    const buscar = document.getElementById("idBuscar").value;
-    const filtro = listaContactos.find(elemento => elemento.nombre === buscar);
-    console.log(filtro);
+    const data = document.getElementById("idBuscar").value;
+
+    // BUSCAR MEDIANTE "find"
+
+    // const filtro = listaContactos.find(elemento => elemento.nombre === data);
+    // console.log(filtro);
+
+    // BUSCAR CON "for...each" DEFINIENDO EL NOMBRE DEL ELEMENTO Y COMPARANDOLO CON "data"
+
+    // listaContactos.forEach(list=> {
+    //     if (list.nombre == data || list.apellido == data || list.telefono == data || list.mail == data){
+    //         console.log(list)
+    //     }
+    // })
+
+    // BUSCAR CON "for...of" PARA RECORRER EL ARRAY, LUEGO MEDIANTE "for..in" RECORRE CADA ELEMENTO DEL ARRAY (objeto), SI ENCUENTRA CONDICION IMPRIME EL ELEMENTO DEL ARRAY(EN ESTE CASO UN OBJETO)
+
+    for (const list of listaContactos) {
+        for (const valor in list){
+        // console.log(list[valor])
+            if ((list[valor]) === data) {
+            console.log(list)
+            }else{
+                console.log("sin coincidencia")
+            }
+        }
+    }
     document.getElementById("idBuscar").value="";
 }
 
