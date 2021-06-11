@@ -15,16 +15,16 @@ function render(){
         listaContactos.forEach(list => {
         let card = document.createElement('article')
         card.innerHTML = `
-                        <div class="card">
-                          <div class="card-header">
-                            ${list.apellido}
-                          </div>
-                          <div class="card-body">
-                            <h3 class="card-title">${list.nombre}</h3>
-                            <p class="card-text">${list.telefono}</p>
-                            <p class="card-text">${list.mail}</p>
-                          </div>
-                        </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    ${list.apellido}
+                                </div>
+                                <div class="card-body">
+                                    <h3 class="card-title">${list.nombre}</h3>
+                                    <p class="card-text">${list.telefono}</p>
+                                    <p class="card-text">${list.mail}</p>
+                                </div>
+                            </div>
         `
         listado.appendChild(card)
     })
@@ -71,6 +71,10 @@ function agregar(){
     console.log(listaContactos.length);
 }
 
+var dataI = document.getElementById("idBuscar");
+dataI.onkeyup = () => {buscar()};
+
+
 function buscar(){
     const data = document.getElementById("idBuscar").value;
 
@@ -94,14 +98,61 @@ function buscar(){
         // console.log(list[valor])
             if ((list[valor]) === data) {
             console.log(list)
+            var encontrado = list
+            
+            // print()
+
+            let element = document.getElementById("listado");
+            while (element.firstChild) {
+              element.removeChild(element.firstChild);
+            }
+
+
+            let card = document.createElement('article')
+            card.innerHTML = `
+                                <div class="card">
+                                    <div class="card-header">
+                                        ${list.apellido}
+                                    </div>
+                                    <div class="card-body">
+                                        <h3 class="card-title">${list.nombre}</h3>
+                                        <p class="card-text">${list.telefono}</p>
+                                        <p class="card-text">${list.mail}</p>
+                                    </div>
+                                </div>
+            `
+            listado.appendChild(card)
+
+
             }else{
                 console.log("sin coincidencia")
+
             }
         }
     }
-    document.getElementById("idBuscar").value="";
+    dataI.onchange = () => {document.getElementById("idBuscar").value=""};
+    // document.getElementById("idBuscar").value="";
 }
 
 function listar (){
     console.log(JSON.parse(localStorage.getItem('listaContactos')))
 }
+
+// function print() {
+//         // const listado = document.getElementById('listado')
+//         let card = document.createElement('article')
+//         card.innerHTML = `
+//                             <div class="card">
+//                                 <div class="card-header">
+//                                     ${list.apellido}
+//                                 </div>
+//                                 <div class="card-body">
+//                                     <h3 class="card-title">${list.nombre}</h3>
+//                                     <p class="card-text">${list.telefono}</p>
+//                                     <p class="card-text">${list.mail}</p>
+//                                 </div>
+//                             </div>
+//         `
+//         listado.appendChild(card)
+
+// }
