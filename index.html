@@ -12,10 +12,10 @@
 	</head>
 
 	<body>
-		<header>
+		<header class="container-fluid">
 
-			<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-			  	<a class="navbar-brand" href="#">
+			<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+			  	<a class="navbar-brand" href="index.html">
 			  		<img class="img-thumbnail" src="media/paperclip.svg" alt="agenda">
 			  	</a>
 			  	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,21 +27,13 @@
 				        	<a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
 				      	</li>
 				      	<li class="nav-item">
-				        	<button id="nroContac"  class="btn btn-secondary" onclick="render ()">Contactos</button>
+				        	<button id="nroContac" type="button" class="btn btn-secondary" onclick="mostrasLista ()">Ver contactos</button>
 				      	</li>
-
-<!-- 				      	<li class="nav-item dropdown">
-				        	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				          Dropdown
-				        	</a>
-				        	<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-				          		<a class="dropdown-item" href="#">Action</a>
-				          		<a class="dropdown-item" href="#">Another action</a>
-				          		<div class="dropdown-divider"></div>
-				          		<a class="dropdown-item" href="#">Something else here</a>
-				        	</div>
-				      	</li> -->
-
+				      	<li class="nav-item">
+	<!-- Button trigger modal Add Contact-->
+							<button type="button" class="btn btn-primary mx-lg-2 my-lg-0 mt-2 mx-0" data-toggle="modal" data-target="#exampleModal">Agregar Contacto</button>
+	<!-- end Button trigger modal Add Contact-->
+						</li>
 				    </ul>
 			    	<div class="form-inline my-2 my-lg-0">
 			      		<input id="idBuscar" class="form-control mr-sm-2" type="search" placeholder="Nombre, apellido, nro." aria-label="Buscar">
@@ -52,23 +44,15 @@
 
 		</header>
 
-		<main class="container-fluid">
-	<!-- Button trigger modal Add Contact-->
-			<button type="button" class="btn btn-primary my-3 " data-toggle="modal" data-target="#exampleModal">
-			  Agregar Contacto
-			</button>
-	<!-- end Button trigger modal Add Contact-->
-
-			<button type="button" class="btn btn-secondary" onclick="render()">Ver contactos</button>
-
+		<main class="container pt-1">
 			<section id="listado" class="accordion">
 
 			</section>
-
-
 		</main>
 
-		<footer>
+		<footer class=" container-fluid navbar fixed-bottom navbar-expand-sm bg-dark">
+			<p class="mb-0 px-3">Corral, Juan Manuel</p>
+			<p class="mb-0 px-3">JavaScript - CODERHOUSE - 2021</p>
 
 <!-- 			<nav class="navbar fixed-bottom navbar-expand-sm navbar-light bg-light">
 				<a class="navbar-brand" href="#">Bottom navbar</a>

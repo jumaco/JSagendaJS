@@ -1,2 +1,7 @@
 .img-thumbnail {
   width: 3em; }
+
+body{
+  margin-top: 86px;
+  margin-bottom: 40px;
+}

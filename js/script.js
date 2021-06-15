@@ -34,8 +34,15 @@ function render(){
         listado.appendChild(card)
     })
         const padre = document.getElementById('nroContac');
-        var cuenta =`Contactos <span class="badge">${listaContactos.length}</span>`;
+        var cuenta =`Ver contactos <span class="badge">${listaContactos.length}</span>`;
         padre.innerHTML = cuenta;
+}
+
+function clear (){
+    let element = document.getElementById("listado");
+    while (element.firstChild) {
+    element.removeChild(element.firstChild);
+    }
 }
 
 // Crea nuevo contacto a partir de los inputs, crea un objeto "Contacto" y luego lo pushea a la "listaContactos" inicial.
@@ -61,10 +68,7 @@ function agregar(){
             document.getElementById("Input2").value="";
             document.getElementById("Input3").value="";
             document.getElementById("Input4").value="";
-            let element = document.getElementById("listado");
-            while (element.firstChild) {
-              element.removeChild(element.firstChild);
-            }
+            clear()
             render()
             }
     }
@@ -120,6 +124,10 @@ function buscar(){
     })
 
     dataI.onfocus = () => {document.getElementById("idBuscar").value=""};
-}
+};
 
+function mostrasLista() {
+    clear();
+    render();
+};
 
