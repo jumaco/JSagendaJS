@@ -1,41 +1,45 @@
 
-
+// Comprueba LocalStorage si existen contactos previos y los imprime, si no crea una lista.
 if ((JSON.parse(localStorage.getItem('listaContactos'))) != null){
-        console.log("agenda en Storage: " +JSON.parse(localStorage.getItem('listaContactos')).length);
         console.log(JSON.parse(localStorage.getItem('listaContactos')))
-        var listaContactos = JSON.parse(localStorage.getItem('listaContactos'))
-        console.log("agenda actual: "+ listaContactos.length)
+        var listaContactos = JSON.parse(localStorage.getItem('listaContactos'));
         render()
     }else
         var listaContactos = [];
 
-
+// A partir de la lista encontrada o creada muestra en DOM
 function render(){
         const listado = document.getElementById('listado')
+        let i=0
         listaContactos.forEach(list => {
+            i++
         let card = document.createElement('article')
         card.innerHTML = `
-                            <div class="card">
-                                <div class="card-header">
-                                    ${list.apellido}
-                                </div>
+                        <div class="card">
+                            <div class="card-header" id="heading${i}">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="false" aria-controls="collapse${i}">
+                                        <h4>${list.apellido}, ${list.nombre}</h4>
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#listado">
                                 <div class="card-body">
-                                    <h3 class="card-title">${list.nombre}</h3>
-                                    <p class="card-text">${list.telefono}</p>
-                                    <p class="card-text">${list.mail}</p>
+                                <p>Teléfono: ${list.telefono}</p>
+                                <p>Email: ${list.mail}</p>
                                 </div>
                             </div>
+                        </div>
         `
         listado.appendChild(card)
     })
-
         const padre = document.getElementById('nroContac');
         var cuenta =`Contactos <span class="badge">${listaContactos.length}</span>`;
-        padre.innerHTML =cuenta;
-
+        padre.innerHTML = cuenta;
 }
 
-
+// Crea nuevo contacto a partir de los inputs, crea un objeto "Contacto" y luego lo pushea a la "listaContactos" inicial.
+// Limpia los inputs y luego remueve DOM creado para volver a ejecutar "render"
 function agregar(){
     const nombre = document.getElementById("Input1").value;
     const apellido = document.getElementById("Input2").value;
@@ -50,10 +54,9 @@ function agregar(){
             this.mail = mail;
         }
         confirmarContacto(){
-            alert("Ingresado\nNombre: " + this.nombre + "\nApellido: " + this.apellido + "\nTeléfono: " + this.telefono + "\nE-Mail: " + this.mail);
             listaContactos.push(nuevoContacto);
             localStorage.setItem ('listaContactos', JSON.stringify(listaContactos))
-            console.log(JSON.parse(localStorage.getItem('listaContactos')))
+                console.log(JSON.parse(localStorage.getItem('listaContactos')))
             document.getElementById("Input1").value="";
             document.getElementById("Input2").value="";
             document.getElementById("Input3").value="";
@@ -67,8 +70,7 @@ function agregar(){
     }
     var nuevoContacto = new Contacto(nombre, apellido, telefono, mail);
     nuevoContacto.confirmarContacto();
-    console.log(nuevoContacto)
-    console.log(listaContactos.length);
+        console.log(listaContactos.length);
 }
 
 var dataI = document.getElementById("idBuscar");
@@ -77,82 +79,47 @@ dataI.onkeyup = () => {buscar()};
 
 function buscar(){
     const data = document.getElementById("idBuscar").value;
+    var listaEncontrados = [];
+    let element = document.getElementById("listado");
 
-    // BUSCAR MEDIANTE "find"
-
-    // const filtro = listaContactos.find(elemento => elemento.nombre === data);
-    // console.log(filtro);
-
-    // BUSCAR CON "for...each" DEFINIENDO EL NOMBRE DEL ELEMENTO Y COMPARANDOLO CON "data"
-
-    // listaContactos.forEach(list=> {
-    //     if (list.nombre == data || list.apellido == data || list.telefono == data || list.mail == data){
-    //         console.log(list)
-    //     }
-    // })
-
-    // BUSCAR CON "for...of" PARA RECORRER EL ARRAY, LUEGO MEDIANTE "for..in" RECORRE CADA ELEMENTO DEL ARRAY (objeto), SI ENCUENTRA CONDICION IMPRIME EL ELEMENTO DEL ARRAY(EN ESTE CASO UN OBJETO)
+    while (element.firstChild) {
+        element.removeChild(element.firstChild);
+    }
 
     for (const list of listaContactos) {
         for (const valor in list){
-        // console.log(list[valor])
             if ((list[valor]) === data) {
-            console.log(list)
-            var encontrado = list
-            
-            // print()
-
-            let element = document.getElementById("listado");
-            while (element.firstChild) {
-              element.removeChild(element.firstChild);
-            }
-
-
-            let card = document.createElement('article')
-            card.innerHTML = `
-                                <div class="card">
-                                    <div class="card-header">
-                                        ${list.apellido}
-                                    </div>
-                                    <div class="card-body">
-                                        <h3 class="card-title">${list.nombre}</h3>
-                                        <p class="card-text">${list.telefono}</p>
-                                        <p class="card-text">${list.mail}</p>
-                                    </div>
-                                </div>
-            `
-            listado.appendChild(card)
-
-
-            }else{
-                console.log("sin coincidencia")
-
+                console.log(list)
+                listaEncontrados.push(list);
+                console.log(listaEncontrados)
             }
         }
     }
-    dataI.onchange = () => {document.getElementById("idBuscar").value=""};
-    // document.getElementById("idBuscar").value="";
+    let i=0
+    listaEncontrados.forEach(list => {
+        i++
+        let card = document.createElement('article')
+        card.innerHTML = `
+                        <div class="card">
+                            <div class="card-header" id="heading${i}">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="false" aria-controls="collapse${i}">
+                                        <h4>${list.apellido}, ${list.nombre}</h4>
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#listado">
+                                <div class="card-body">
+                                <p>Teléfono: ${list.telefono}</p>
+                                <p>Email: ${list.mail}</p>
+                                </div>
+                            </div>
+                        </div>
+        `
+        listado.appendChild(card)
+    })
+
+    dataI.onfocus = () => {document.getElementById("idBuscar").value=""};
 }
 
-function listar (){
-    console.log(JSON.parse(localStorage.getItem('listaContactos')))
-}
 
-// function print() {
-//         // const listado = document.getElementById('listado')
-//         let card = document.createElement('article')
-//         card.innerHTML = `
-//                             <div class="card">
-//                                 <div class="card-header">
-//                                     ${list.apellido}
-//                                 </div>
-//                                 <div class="card-body">
-//                                     <h3 class="card-title">${list.nombre}</h3>
-//                                     <p class="card-text">${list.telefono}</p>
-//                                     <p class="card-text">${list.mail}</p>
-//                                 </div>
-//                             </div>
-//         `
-//         listado.appendChild(card)
-
-// }
