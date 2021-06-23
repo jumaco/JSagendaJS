@@ -6,23 +6,35 @@ if ((JSON.parse(localStorage.getItem('listaContactos'))) != null){
         // console.table(JSON.parse(localStorage.getItem('listaContactos')))
         var listaContactos = JSON.parse(localStorage.getItem('listaContactos'));
 
-        render()
-    }else{
+        render(listaContactos)
+        badge()
+}else{
         var listaContactos = [];
-    }
+};
 
 console.log("Almacenados en memoria")
-// console.table(listaContactos)
-        // console.log("Almacenados en memoria"+ JSON.stringify(listaContactos))
+console.log(listaContactos)
+// console.log("Almacenados en memoria"+ JSON.stringify(listaContactos))
+
+// Contador de contactos
+// const badge = document.getElementById('nroContac');
+function badge(){
+    var cuenta =`Ver contactos <span class="badge">${listaContactos.length}</span>`;
+    nroContac.innerHTML = cuenta;
+}
 
 function ordenar(array){
-    array.sort((a, b) =>{
-        const nomApellA = a.apellido.toLowerCase();
-        const nomApellB = b.apellido.toLowerCase();
-        if(nomApellA < nomApellB) {
+    array.sort((a, b) => {
+        if(a.apellido.toLowerCase() < b.apellido.toLowerCase()) {
             return -1;
         }
-        if(nomApellA > nomApellB){
+        if(a.apellido.toLowerCase() > b.apellido.toLowerCase()){
+            return 1;
+        }
+        if(a.nombre.toLowerCase() < b.nombre.toLowerCase()) {
+            return -1;
+        }
+        if(a.nombre.toLowerCase() > b.nombre.toLowerCase()){
             return 1;
         }
         return 0;
@@ -31,12 +43,12 @@ function ordenar(array){
 
 
 // A partir de la lista encontrada o creada muestra en DOM
-function render(){
-        const listado = document.getElementById('listado')
+
+function render(arrayVer){
+        // const listado = document.getElementById('listado')
+        ordenar(arrayVer)
         let i=0
-        ordenar(listaContactos)
-    // con la lista ya ordenada pasa al for each para renderizar cada objeto
-        listaContactos.forEach(list => {
+        arrayVer.forEach(list => {
             i++
         let card = document.createElement('article')
         card.innerHTML = `
@@ -62,15 +74,46 @@ function render(){
         `
         listado.appendChild(card)
     })
-        const padre = document.getElementById('nroContac');
-        var cuenta =`Ver contactos <span class="badge">${listaContactos.length}</span>`;
-        padre.innerHTML = cuenta;
-}
+};
+
+// function render(){
+//         // let listado = document.getElementById('listado')
+//         let i=0
+//         ordenar(listaContactos)
+//     // con la lista ya ordenada pasa al for each para renderizar cada objeto
+//         listaContactos.forEach(list => {
+//             i++
+//         let card = document.createElement('article')
+//         card.innerHTML = `
+//                         <div class="card">
+//                             <div class="card-header" id="heading${i}">
+//                                 <h5 class="mb-0">
+//                                     <button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="false" aria-controls="collapse${i}">
+//                                         <h4>${list.apellido}, ${list.nombre}</h4>
+//                                     </button>
+//                                 </h5>
+//                             </div>
+//                             <div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#listado">
+//                                 <div class="card-body">
+//                                     <p>Teléfono: ${list.telefono}</p>
+//                                     <p>Email: ${list.mail}</p>
+//                                 </div>
+//                                 <div>
+//                                     <button type="button" class="btn btn-primary btn-sm edit${i}">Editar</button>
+//                                     <button type="button" class="btn btn-danger btn-sm remov${i}">Eliminar</button>
+//                                 </div>
+//                             </div>
+//                         </div>
+//         `
+//         listado.appendChild(card)
+//     })
+
+// }
 
 function clear (){
-    let element = document.getElementById("listado");
-    while (element.firstChild) {
-    element.removeChild(element.firstChild);
+    // let element = document.getElementById("listado");
+    while (listado.firstChild) {
+    listado.removeChild(listado.firstChild);
     }
 }
 
@@ -98,17 +141,18 @@ function agregar(){
             document.getElementById("Input3").value="";
             document.getElementById("Input4").value="";
             clear()
-            render()
+            render(listaContactos)
             }
     }
     var nuevoContacto = new Contacto(nombre, apellido, telefono, mail);
     nuevoContacto.confirmarContacto();
     console.log(listaContactos.length);
+    badge()
 }
 
 var dataI = document.getElementById("idBuscar");
 dataI.onkeyup = () => {buscar()};
-
+dataI.onfocus = () => {document.getElementById("idBuscar").value=""};
 
 function buscar(){
     const data = document.getElementById("idBuscar").value;
@@ -124,40 +168,12 @@ function buscar(){
             }
         }
     }
-    let i=0
-    listaEncontrados.forEach(list => {
-        i++
-        let card = document.createElement('article')
-        card.innerHTML = `
-                        <div class="card">
-                            <div class="card-header" id="heading${i}">
-                                <h5 class="mb-0">
-                                    <button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="false" aria-controls="collapse${i}">
-                                        <h4>${list.apellido}, ${list.nombre}</h4>
-                                    </button>
-                                </h5>
-                            </div>
-                            <div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#listado">
-                                <div class="card-body">
-                                <p>Teléfono: ${list.telefono}</p>
-                                <p>Email: ${list.mail}</p>
-                                </div>
-                                <div>
-                                    <button type="button" class="btn btn-primary btn-sm edit${i}">Editar</button>
-                                    <button type="button" class="btn btn-danger btn-sm remov${i}">Eliminar</button>
-                                </div>
-                            </div>
-                        </div>
-        `
-        listado.appendChild(card)
-    })
-
-    dataI.onfocus = () => {document.getElementById("idBuscar").value=""};
+    render(listaEncontrados)
 };
 
 function mostrasLista() {
     clear();
-    render();
+    render(listaContactos);
 };
 
 
@@ -165,4 +181,7 @@ $(`#guardar`).on('click', function () {
     $("#respuestaGuardado").prepend(`
         <button type="button" class="btn btn-success">Contacto Guardado</button>
     `);
+    $(".btn-success").fadeOut(4000)
 });
+
+
