@@ -1,16 +1,41 @@
 
 // Comprueba LocalStorage si existen contactos previos y los imprime, si no crea una lista.
 if ((JSON.parse(localStorage.getItem('listaContactos'))) != null){
+        console.log("Almacenados en LocalStorage")
         console.log(JSON.parse(localStorage.getItem('listaContactos')))
+        // console.table(JSON.parse(localStorage.getItem('listaContactos')))
         var listaContactos = JSON.parse(localStorage.getItem('listaContactos'));
+
         render()
-    }else
+    }else{
         var listaContactos = [];
+    }
+
+console.log("Almacenados en memoria")
+// console.table(listaContactos)
+        // console.log("Almacenados en memoria"+ JSON.stringify(listaContactos))
+
+function ordenar(array){
+    array.sort((a, b) =>{
+        const nomApellA = a.apellido.toLowerCase();
+        const nomApellB = b.apellido.toLowerCase();
+        if(nomApellA < nomApellB) {
+            return -1;
+        }
+        if(nomApellA > nomApellB){
+            return 1;
+        }
+        return 0;
+    })
+}
+
 
 // A partir de la lista encontrada o creada muestra en DOM
 function render(){
         const listado = document.getElementById('listado')
         let i=0
+        ordenar(listaContactos)
+    // con la lista ya ordenada pasa al for each para renderizar cada objeto
         listaContactos.forEach(list => {
             i++
         let card = document.createElement('article')
@@ -25,8 +50,12 @@ function render(){
                             </div>
                             <div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#listado">
                                 <div class="card-body">
-                                <p>Teléfono: ${list.telefono}</p>
-                                <p>Email: ${list.mail}</p>
+                                    <p>Teléfono: ${list.telefono}</p>
+                                    <p>Email: ${list.mail}</p>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-primary btn-sm edit${i}">Editar</button>
+                                    <button type="button" class="btn btn-danger btn-sm remov${i}">Eliminar</button>
                                 </div>
                             </div>
                         </div>
@@ -46,7 +75,7 @@ function clear (){
 }
 
 // Crea nuevo contacto a partir de los inputs, crea un objeto "Contacto" y luego lo pushea a la "listaContactos" inicial.
-// Limpia los inputs y luego remueve DOM creado para volver a ejecutar "render"
+// Limpia los inputs y luego remueve DOM creado para volver a ejecutar "render".
 function agregar(){
     const nombre = document.getElementById("Input1").value;
     const apellido = document.getElementById("Input2").value;
@@ -74,7 +103,7 @@ function agregar(){
     }
     var nuevoContacto = new Contacto(nombre, apellido, telefono, mail);
     nuevoContacto.confirmarContacto();
-        console.log(listaContactos.length);
+    console.log(listaContactos.length);
 }
 
 var dataI = document.getElementById("idBuscar");
@@ -84,11 +113,7 @@ dataI.onkeyup = () => {buscar()};
 function buscar(){
     const data = document.getElementById("idBuscar").value;
     var listaEncontrados = [];
-    let element = document.getElementById("listado");
-
-    while (element.firstChild) {
-        element.removeChild(element.firstChild);
-    }
+    clear()
 
     for (const list of listaContactos) {
         for (const valor in list){
@@ -117,6 +142,10 @@ function buscar(){
                                 <p>Teléfono: ${list.telefono}</p>
                                 <p>Email: ${list.mail}</p>
                                 </div>
+                                <div>
+                                    <button type="button" class="btn btn-primary btn-sm edit${i}">Editar</button>
+                                    <button type="button" class="btn btn-danger btn-sm remov${i}">Eliminar</button>
+                                </div>
                             </div>
                         </div>
         `
@@ -131,3 +160,9 @@ function mostrasLista() {
     render();
 };
 
+
+$(`#guardar`).on('click', function () {
+    $("#respuestaGuardado").prepend(`
+        <button type="button" class="btn btn-success">Contacto Guardado</button>
+    `);
+});

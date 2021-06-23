@@ -27,12 +27,31 @@
 				        	<a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
 				      	</li>
 				      	<li class="nav-item">
-				        	<button id="nroContac" type="button" class="btn btn-secondary" onclick="mostrasLista ()">Ver contactos</button>
+
+				      		<div  class="btn-group">
+								<button id="nroContac" type="button" class="btn btn-secondary" onclick="mostrasLista ()">Ver contactos</button>
+								<button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								    <span class="sr-only">Toggle Dropdown</span>
+								</button>
+								<div class="dropdown-menu">
+								    <a class="dropdown-item" href="#">Ordenar por nombre</a>
+								    <a class="dropdown-item" href="#">Another action</a>
+								</div>
+							</div>
+
+
+
+<!-- 				        	<button id="nroContac" type="button" class="btn btn-secondary" onclick="mostrasLista ()">Ver contactos</button> -->
+				      	
+
 				      	</li>
 				      	<li class="nav-item">
 	<!-- Button trigger modal Add Contact-->
 							<button type="button" class="btn btn-primary mx-lg-2 my-lg-0 mt-2 mx-0" data-toggle="modal" data-target="#exampleModal">Agregar Contacto</button>
 	<!-- end Button trigger modal Add Contact-->
+						</li>
+						<li id="respuestaGuardado">
+							<!-- Aquí va la respuesta a guardado -->
 						</li>
 				    </ul>
 			    	<div class="form-inline my-2 my-lg-0">
@@ -117,17 +136,18 @@
 
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary"  data-dismiss="modal">Cerrar</button>
-							<button type="button" class="btn btn-primary" onclick="agregar()" data-dismiss="modal">Guardar</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+							<button id="guardar" type="button" class="btn btn-primary" onclick="agregar()" data-dismiss="modal">Guardar</button>
 						</div>
 					</div>
 				</div>
 			</div>
 
-		<script src="js/script.js"></script>
+
 	    <script src="dist/popper.js/dist/umd/popper.min.js"></script>
 	    <script src="dist/jquery/dist/jquery.slim.min.js"></script>
 	    <script src="dist/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	    <script src="js/script.js"></script>
 	</body>
 
 </html>
