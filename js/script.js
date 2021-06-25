@@ -5,6 +5,18 @@ if ((JSON.parse(localStorage.getItem('listaContactos'))) != null){
         console.log(JSON.parse(localStorage.getItem('listaContactos')))
         // console.table(JSON.parse(localStorage.getItem('listaContactos')))
         var listaContactos = JSON.parse(localStorage.getItem('listaContactos'));
+// AGREGANDO UN ID
+        for (var i = 0; i < listaContactos.length; i++) {
+            // let num = i;
+            // let numString = num.toString();
+            listaContactos[i].id = i.toString();
+        }
+        console.log("Almacenados en localStorage con nuevo ID")
+        console.log(listaContactos);
+        // alert()
+
+
+
 // A partir de la lista encontrada o creada muestra en DOM
         render(listaContactos)
         badge()
@@ -65,7 +77,7 @@ function render(arr){
         ordenar(arr)
         let i=0
         arr.forEach(list => {
-            i++
+            
         let card = document.createElement('article')
         card.innerHTML = `
                         <div class="card">
@@ -82,13 +94,14 @@ function render(arr){
                                     <p>Email: ${list.mail}</p>
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-primary btn-sm edit${i}">Editar</button>
-                                    <button type="button" class="btn btn-danger btn-sm remov${i}">Eliminar</button>
+                                   <!-- <button type="button" class="btn btn-primary btn-sm edit${i}">Editar</button> -->
+                                    <button type="button" class="btn btn-danger btn-sm remov${i}" onclick="eliminarContac(${i})">Eliminar</button>
                                 </div>
                             </div>
                         </div>
         `
         listado.appendChild(card)
+        i++
     })
 };
 
@@ -103,10 +116,10 @@ function clear (){
 // Crea nuevo contacto a partir de los inputs, crea un objeto "Contacto" y luego lo pushea a la "listaContactos" inicial.
 // Limpia los inputs y luego remueve DOM creado para volver a ejecutar "render".
 function agregar(){
-    const nombre = document.getElementById("Input1").value;
-    const apellido = document.getElementById("Input2").value;
-    const telefono = document.getElementById("Input3").value;
-    const mail = document.getElementById("Input4").value;
+    const nombre = $("#Input1").val();
+    const apellido = $("#Input2").val();
+    const telefono = $("#Input3").val();
+    const mail = $("#Input4").val();
 
     class Contacto {
         constructor(nombre, apellido, telefono, mail) {
@@ -187,3 +200,20 @@ $(`#guardar`).on('click', function () {
 });
 
 
+function eliminarContac (desdeIndex){
+        console.log("Almacenados en LocalStorage")
+        console.log(JSON.parse(localStorage.getItem('listaContactos')))
+    listaContactos.splice(desdeIndex, 1); // Para la posición  1 elimina 1 elemento
+        console.log("Almacenados en memoria")
+        console.log(listaContactos)
+    localStorage.setItem ('listaContactos', JSON.stringify(listaContactos))
+        console.log("Almacenados en LocalStorage")
+        console.log(JSON.parse(localStorage.getItem('listaContactos')))
+    clear()
+    badge()
+    render(listaContactos);
+    $("#respuestaGuardado").prepend(`
+        <button type="button" class="btn btn-warning">Contacto Eliminado</button>
+    `);
+    $(".btn-warning").fadeOut(4000)
+}
