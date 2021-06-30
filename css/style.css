@@ -5,3 +5,20 @@ body{
   margin-top: 86px;
   margin-bottom: 40px;
 }
+menu{
+  display: flex;
+}
+.bloque{
+  display: none;
+
+}
+.bloque.visible{
+    display: block;
+}
+a{
+  text-decoration: none;
+  display: block;
+}
+a:hover{
+  text-decoration: none;
+}

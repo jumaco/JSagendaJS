@@ -1,42 +1,67 @@
-
 // Comprueba LocalStorage si existen contactos previos y los imprime, si no crea una lista.
 if ((JSON.parse(localStorage.getItem('listaContactos'))) != null){
         console.log("Almacenados en LocalStorage")
         console.log(JSON.parse(localStorage.getItem('listaContactos')))
         // console.table(JSON.parse(localStorage.getItem('listaContactos')))
         var listaContactos = JSON.parse(localStorage.getItem('listaContactos'));
-// AGREGANDO UN ID
-        for (var i = 0; i < listaContactos.length; i++) {
-            // let num = i;
-            // let numString = num.toString();
-            listaContactos[i].id = i.toString();
-        }
-        console.log("Almacenados en localStorage con nuevo ID")
+    // // AGREGANDO UN ID
+    //     for (let i = 0; i < listaContactos.length; i++) {
+    //         listaContactos[i].id = i;
+    //             // .toString(); // pasado a string para que funcione en buscador x el toLowerCase.
+    //     }
+        agregarId(listaContactos)
+        console.log("Almacenados en memoria con nuevo ID")
         console.log(listaContactos);
         // alert()
-
-
-
-// A partir de la lista encontrada o creada muestra en DOM
-        render(listaContactos)
-        badge()
+        //A PARTIR DE LISTA ENCONTRADA FILTRA REPETIDOS
+        const aMostrar = filtrarDuplicado(listaContactos)
+    // A partir de la lista encontrada muestra en DOM
+        render(aMostrar)
+        badge(`CONTACTOS <span class="badge">${listaContactos.length}</span>`,nroContac);
 }else{
         var listaContactos = [];
 };
 
-console.log("Almacenados en memoria")
-console.log(listaContactos)
-// console.log("Almacenados en memoria"+ JSON.stringify(listaContactos))
-
-// Contador de contactos
-// const badge = document.getElementById('nroContac');
-function badge(){
-    var cuenta =`Ver contactos <span class="badge">${listaContactos.length}</span>`;
-    nroContac.innerHTML = cuenta;
+function agregarId (arr){
+            for (let i = 0; i < arr.length; i++) {
+            arr[i].id = i;
+                // .toString(); // pasado a string para que funcione en buscador x el toLowerCase.
+        }
 }
 
 
 
+// ---------------
+console.log("Almacenados en memoria")
+console.log(listaContactos)
+// console.log("Almacenados en memoria"+ JSON.stringify(listaContactos))
+
+
+// MUESTRA u OCULTA UNA SECCION
+const bloques = $(".bloque");
+const enlaces = $("#navegacion").find("a");
+// console.log(enlaces)
+
+enlaces.click(function(e){
+    e.preventDefault();
+    let iden = $(this).attr("href");
+    bloques.filter(iden).addClass("visible").siblings().removeClass("visible");
+    $(e.target.parentNode).removeClass("alert-primary alert-secondary border-bottom-0").siblings().removeClass("alert-primary alert-secondary border-bottom-0");
+    $(e.target.parentNode).addClass("alert-primary border-bottom-0").siblings().addClass("alert-secondary")
+})
+
+// Contador de contactos
+// const badge = document.getElementById('nroContac');
+function badge(el1, el2){
+    // var cuenta =`CONTACTOS <span class="badge">${listaContactos.length}</span>`;
+    var cuenta = el1
+    el2.innerHTML = cuenta;
+}
+
+
+// Filtra duplicados dentro de un array.
+// -en la version inicial se podían guardar contactos identicos.
+// -al momento de hacer una busqueda puede traer duplicados.
 
 function filtrarDuplicado(arr){
 // si el array contiene objetos iguales lo omite en un nuevo array
@@ -47,13 +72,14 @@ function filtrarDuplicado(arr){
             resultado.push(item);
         }
     })
-    // console.log(resultado);
+    console.log("Array sin repetidos")
+    console.log(resultado);
     return resultado
 };
 
 
 
-
+// ORDENA EL ARRAY SEGUN APELLIDO Y LUEGO POR NOMBRE
 function ordenar(arr){
     arr.sort((a, b) => {
         if(a.apellido.toLowerCase() < b.apellido.toLowerCase()) {
@@ -72,44 +98,48 @@ function ordenar(arr){
     })
 }
 
+
+// RENDERIZA UN ARRAY 
+// SE OMITIÓ EL LA VARIABLE i, YA QUE AHORA UTILIZA EL id DENTRO DEL OBJETO PARA DISCRIMINAR.
+// OMITÍ EL getElementById YA QUE AL USAR UN id HTML JS lo reconoce ¿?.
 function render(arr){
-        // const listado = document.getElementById('listado')
-        ordenar(arr)
-        let i=0
-        arr.forEach(list => {
-            
-        let card = document.createElement('article')
-        card.innerHTML = `
-                        <div class="card">
-                            <div class="card-header" id="heading${i}">
+    // const listado = document.getElementById('listado').
+    ordenar(arr)
+    // let i=0
+    arr.forEach(list => {
+    let card = document.createElement('article')
+    card.innerHTML =
+                    `
+                        <div class="card mb-1">
+                            <div class="card-header" id="heading${list.id}">
                                 <h5 class="mb-0">
-                                    <button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="false" aria-controls="collapse${i}">
+                                    <button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse${list.id}" aria-expanded="false" aria-controls="collapse${list.id}">
                                         <h4>${list.apellido}, ${list.nombre}</h4>
                                     </button>
                                 </h5>
                             </div>
-                            <div id="collapse${i}" class="collapse" aria-labelledby="heading${i}" data-parent="#listado">
+                            <div id="collapse${list.id}" class="collapse" aria-labelledby="heading${list.id}" data-parent="#listado">
                                 <div class="card-body">
                                     <p>Teléfono: ${list.telefono}</p>
                                     <p>Email: ${list.mail}</p>
+                                <div class="d-flex justify-content-end">
+                                   <!-- <button type="button" class="btn btn-primary btn-sm edit${list.id}">Editar</button> -->
+                                    <button type="button" class="btn btn-danger btn-sm remov${list.id}" onclick="eliminarContac(${list.id})">Eliminar</button>
                                 </div>
-                                <div>
-                                   <!-- <button type="button" class="btn btn-primary btn-sm edit${i}">Editar</button> -->
-                                    <button type="button" class="btn btn-danger btn-sm remov${i}" onclick="eliminarContac(${i})">Eliminar</button>
                                 </div>
                             </div>
                         </div>
-        `
-        listado.appendChild(card)
-        i++
+                    `
+    listado.appendChild(card)
+    // i++
     })
 };
 
 
-function clear (){
+function clear (id){
     // let element = document.getElementById("listado");
-    while (listado.firstChild) {
-    listado.removeChild(listado.firstChild);
+    while (id.firstChild) {
+    id.removeChild(id.firstChild);
     }
 };
 
@@ -129,37 +159,28 @@ function agregar(){
             this.mail = mail;
         }
         confirmarContacto(){
-            // if(!listaContactos.includes(nuevoContacto)){
-            //     console.log(nuevoContacto)
-            //     console.log(listaContactos.includes(nuevoContacto))
-            //     alert("Contacto Existente")
-
-
-
-            // }else{
-
-                console.log(listaContactos.includes(nuevoContacto))
-                
-                console.log(nuevoContacto)
-                listaContactos.push(nuevoContacto);
-                // listaContactos.push(nuevoContacto);
-                localStorage.setItem ('listaContactos', JSON.stringify(listaContactos))
-                console.log(JSON.parse(localStorage.getItem('listaContactos')))
-                document.getElementById("Input1").value="";
-                document.getElementById("Input2").value="";
-                document.getElementById("Input3").value="";
-                document.getElementById("Input4").value="";
-                clear()
-                render(listaContactos)
-
-            // }
-
+            console.log("el de abajo es el nuevo contacto")
+            console.log(nuevoContacto);
+            agregarId(listaContactos);
+            listaContactos.push(nuevoContacto);
+            localStorage.setItem ('listaContactos', JSON.stringify(listaContactos));
+            console.log(JSON.parse(localStorage.getItem('listaContactos')));
+            document.getElementById("Input1").value="";
+            document.getElementById("Input2").value="";
+            document.getElementById("Input3").value="";
+            document.getElementById("Input4").value="";
+            clear(listado);
+            render(listaContactos);
+            $("#respuestaGuardado").prepend(`
+                <button type="button" class="btn btn-success">Contacto Guardado</button>
+            `);
+            $(".btn-success").fadeOut(4000);
         }
     }
     var nuevoContacto = new Contacto(nombre, apellido, telefono, mail);
     nuevoContacto.confirmarContacto();
     console.log(listaContactos.length);
-    badge()
+    badge(`CONTACTOS <span class="badge">${listaContactos.length}</span>`,nroContac);
 };
 
 
@@ -171,13 +192,16 @@ idBuscar.onfocus = () => {idBuscar.value=""};
 function buscar(){
     const data = document.getElementById("idBuscar").value;
     var listaEncontrados = [];
-    clear()
+    clear(listado)
     for (const list of listaContactos) {
         for (const valor in list){
-            if ((list[valor].toLowerCase()).includes(data.toLowerCase())) {
-                // console.log(list)
-                listaEncontrados.push(list);
-                // console.log(listaEncontrados)
+            if(valor != "id"){
+                if ((list[valor].toLowerCase()).includes(data.toLowerCase())) {
+                    // console.log(list)
+                    listaEncontrados.push(list);
+                    console.log("lista de encontrados")
+                    console.log(listaEncontrados)
+                }
             }
         }
     }
@@ -187,33 +211,43 @@ function buscar(){
 };
 
 function mostrasLista() {
-    clear();
+    clear(listado);
     render(listaContactos);
 };
 
 
-$(`#guardar`).on('click', function () {
-    $("#respuestaGuardado").prepend(`
-        <button type="button" class="btn btn-success">Contacto Guardado</button>
-    `);
-    $(".btn-success").fadeOut(4000)
-});
+// $(`#guardar`).on('click', function () {
+//     $("#respuestaGuardado").prepend(`
+//         <button type="button" class="btn btn-success">Contacto Guardado</button>
+//     `);
+//     $(".btn-success").fadeOut(4000)
+// });
 
-
+// ELIMINA CONTACTO MEDIANTE .splice A PARTIR DEL nuemero de index BORRA 1 OBJETO, EL ID DE CADA OBJETO SE HIZO COINCIDIR CON EL index DEL ARRAY.
+//LA FUNCION ES LLAMADA mediante onclick html JUNTO CON EL PARAMETRO QUE ES RELLENADO AL CREAR EL DOM
 function eliminarContac (desdeIndex){
-        console.log("Almacenados en LocalStorage")
+        console.log("Al ejecutar eliminar Almacenados en LocalStorage antes del splice")
         console.log(JSON.parse(localStorage.getItem('listaContactos')))
+        console.log("Al ejecutar eliminar Almacenados en memoria antes del splice")
+        console.log(listaContactos);
+        alert("con alert detengo que se actualice consola para ver el array antes de splice")
     listaContactos.splice(desdeIndex, 1); // Para la posición  1 elimina 1 elemento
-        console.log("Almacenados en memoria")
-        console.log(listaContactos)
+        console.log("Al ejecutar eliminar Almacenados en memoria luego del splice")
+        console.log(listaContactos);
+        alert("con alert detengo que se actualice consola para ver el array antes de reasignar id")
+    agregarId(listaContactos);
     localStorage.setItem ('listaContactos', JSON.stringify(listaContactos))
-        console.log("Almacenados en LocalStorage")
+        console.log("Al ejecutar eliminar luego de splice y reasignar id Almacenados en memoria")
+        console.log(listaContactos);
+        console.log("Al ejecutar eliminar luego de splice y reasignar id Almacenados en LocalStorage")
         console.log(JSON.parse(localStorage.getItem('listaContactos')))
-    clear()
-    badge()
+    clear(listado)
+    badge(`CONTACTOS <span class="badge">${listaContactos.length}</span>`,nroContac);
     render(listaContactos);
     $("#respuestaGuardado").prepend(`
-        <button type="button" class="btn btn-warning">Contacto Eliminado</button>
+        <button id="eliminado" type="button" class="btn btn-danger">Contacto Eliminado</button>
     `);
-    $(".btn-warning").fadeOut(4000)
+    $("#eliminado").fadeOut(4000)
 }
+
+
