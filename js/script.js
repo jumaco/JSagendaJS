@@ -140,15 +140,11 @@ function agregar(){
             $("#respuestaGuardado").prepend(`<button type="button" class="btn btn-success">Contacto Guardado</button>`);
             $(".btn-success").fadeOut(4000);
         }
-
     }
     var nuevoContacto = new Contacto(nombre, apellido, telefono, mail);
-
-
+    nuevoContacto.confirmarContacto();
     badge(`CONTACTOS ${listaContactos.length}`,nroContac);
 };
-
-
 
 // BUSCADOR
 // DENTRO DE CADA ELEMENTO DE ARRAY(OBJETO) BUSCA LO INGRESADO EN EL VALOR DE LA KEY, LO ALMACENA EN UN NUEVO ARRAY, FILTRA REPETIDOS, RENDER AL NUEVO ARRAY
@@ -188,20 +184,53 @@ function eliminarContac (desdeIndex){
     $("#eliminado").fadeOut(4000);
 }
 
-addContact.onclick= () => {
-    const labels = $("label");
-    const inputs = $("form").find("input");
-    console.log(inputs)
-    console.log(labels)
+// VALIDACIÓN DE FORMULARIO NUEVO CONTACTO
+const inputs = $('form').find('input');
 
-    for (const input of inputs) {
-        console.log(input)
-        let valor = (input.$("input")).attr("id");
-        console.log(valor)
+function validar(){
+    let reg = /^[A-Z0-9._%+-]+@([A-Z0-9-]+.)+[A-Z]{2,4}$/i;
+    // console.log(inputs);
+    // alert('stop')
+    for (let input of inputs) {
+        // console.log(input.value);
+        // console.log($(input).attr('id'));
+        if((($(input).attr('id')) == 'Input3') && (isNaN(parseInt($(input).val().trim())))) {
+            $(input).addClass("border border-danger");
+        }else if((($(input).attr('id')) == 'Input4') && !reg.test($(input).val().trim()) ) {
+            $(input).addClass("border border-danger");
+        }else if($(input).val().trim() == '' ){
+            $(input).addClass("border border-danger");
+        }else {
+            $(input).removeClass("border border-danger");
+        };
+    };
+    if (!inputs.hasClass('border-danger')){
+        $('#guardar').removeAttr("disabled");
+    };
+};
+
+// LLAMADO A FUNCION VALIDAR
+$(inputs).blur(function(e){
+    e.preventDefault();
+    // pendiente: sí pasó el último input validar para que no resalte luego del primer blur
+    validar();
+})
 
 
-    }
-}
+// addContact.onclick= () => {
+//     const labels = $("label");
+//     const inputs = $("form").find("input");
+//     console.log(inputs)
+//     console.log(labels)
+
+//     for (const input of inputs) {
+//         console.log(input)
+//         let valor = (input.$("input")).attr("id");
+//         console.log(valor)
+
+
+//     }
+// }
 
 // inputs.blur(function(e){
 //     e.preventDefault();
@@ -212,64 +241,64 @@ addContact.onclick= () => {
 // })
 
 
-addContact.onclick= () => {
-    let reg = /^[A-Z0-9._%+-]+@([A-Z0-9-]+.)+[A-Z]{2,4}$/i;
+// addContact.onclick= () => {
+//     let reg = /^[A-Z0-9._%+-]+@([A-Z0-9-]+.)+[A-Z]{2,4}$/i;
 
-    console.log("corriendo validacion")
-    $('#Input1').blur(function() {
-        if($("#Input1").val().trim() == '' ){
-            $(this).addClass("border border-danger");
-        }else {
-            $(this).removeClass("border border-danger");
-            $('#guardar').removeAttr("disabled");
-        }
-    });
-    $('#Input2').blur(function() {
-        if($("#Input2").val().trim() == '' ){
-            $(this).addClass("border border-danger");
-            $('#guardar').attr("disabled","disabled");
-        }else {
-            $(this).removeClass("border border-danger");
-            $('#guardar').removeAttr("disabled");
-        }
-    });
+//     console.log("corriendo validacion")
+//     $('#Input1').blur(function() {
+//         if($("#Input1").val().trim() == '' ){
+//             $(this).addClass("border border-danger");
+//         }else {
+//             $(this).removeClass("border border-danger");
+//             $('#guardar').removeAttr("disabled");
+//         }
+//     });
+//     $('#Input2').blur(function() {
+//         if($("#Input2").val().trim() == '' ){
+//             $(this).addClass("border border-danger");
+//             $('#guardar').attr("disabled","disabled");
+//         }else {
+//             $(this).removeClass("border border-danger");
+//             $('#guardar').removeAttr("disabled");
+//         }
+//     });
 
-    $('#Input3').blur(function() {
-        console.log (parseInt($("#Input3").val().trim()))
+//     $('#Input3').blur(function() {
+//         console.log (parseInt($("#Input3").val().trim()))
 
-        if(($("#Input3").val().trim() == '') || (isNaN(parseInt($("#Input3").val().trim()))) ){
-            $(this).addClass("border border-danger");
-            $('#guardar').attr("disabled","disabled");
-        }else {
-            $(this).removeClass("border border-danger");
-            $('#guardar').removeAttr("disabled");
-        }
-        })
+//         if(($("#Input3").val().trim() == '') || (isNaN(parseInt($("#Input3").val().trim()))) ){
+//             $(this).addClass("border border-danger");
+//             $('#guardar').attr("disabled","disabled");
+//         }else {
+//             $(this).removeClass("border border-danger");
+//             $('#guardar').removeAttr("disabled");
+//         }
+//         })
 
-    $('#Input4').blur(function() {
-        if($("#Input4").val().trim() == '' ){
-            $(this).addClass("border border-danger");
-            $('#guardar').attr("disabled","disabled");
-        }else {
-            $(this).removeClass("border border-danger");
-            $('#guardar').removeAttr("disabled");
-        }
-        })
+//     $('#Input4').blur(function() {
+//         if($("#Input4").val().trim() == '' ){
+//             $(this).addClass("border border-danger");
+//             $('#guardar').attr("disabled","disabled");
+//         }else {
+//             $(this).removeClass("border border-danger");
+//             $('#guardar').removeAttr("disabled");
+//         }
+//         })
 
-    $('#Input4').blur(function() {
-        mail = $("#Input4").val().trim()
-        if(mail != '' && reg.test(mail)){
-            $(this).removeClass("border border-danger");
-            $('#guardar').removeAttr("disabled");
-        }else {
-            $(this).addClass("border border-danger");
-            $('#guardar').attr("disabled","disabled");
-        }
-        })
-    if (($("#Input1").val() == '')||($("#Input2").val() == '')||($("#Input3").val() == '')||($("#Input4").val() == '')) {
-        $('#guardar').attr("disabled","disabled");
-    }
-}
+//     $('#Input4').blur(function() {
+//         mail = $("#Input4").val().trim()
+//         if(mail != '' && reg.test(mail)){
+//             $(this).removeClass("border border-danger");
+//             $('#guardar').removeAttr("disabled");
+//         }else {
+//             $(this).addClass("border border-danger");
+//             $('#guardar').attr("disabled","disabled");
+//         }
+//         })
+//     if (($("#Input1").val() == '')||($("#Input2").val() == '')||($("#Input3").val() == '')||($("#Input4").val() == '')) {
+//         $('#guardar').attr("disabled","disabled");
+//     }
+// }
 
 
     // }else if(mail.trim() == '' ){
