@@ -42,7 +42,7 @@
 				      	</li>
 				      	<li class="nav-item">
 	<!-- Button trigger modal Add Contact-->
-							<button type="button" class="btn btn-primary mx-lg-2 my-lg-0 mt-2 mx-0" data-toggle="modal" data-target="#exampleModal">Agregar Contacto</button>
+							<button id="addContact" type="button" class="btn btn-primary mx-lg-2 my-lg-0 mt-2 mx-0" data-toggle="modal" data-target="#exampleModal">Agregar Contacto</button>
 	<!-- end Button trigger modal Add Contact-->
 						</li>
 						<li id="respuestaGuardado">
@@ -58,6 +58,7 @@
 
 		</header>
 
+<!-- CONTENIDO DOM -->
 		<main class="container py-1">
 			<menu id="navegacion" class="container px-0 mb-0">
 				<div class="vinculo col-md-6 alert alert-primary mb-0 border-bottom-0 rounded-0">
@@ -67,13 +68,14 @@
 					<a id="temp" href="#clima">CLIMA</a>
 				</div>
 			</menu>
-			<div>
-				<section id="listado" class="bloque visible accordion alert alert-primary border-top-0 rounded-0">
-				</section>
-				<section id="clima" class="bloque accordion alert alert-primary border-top-0 rounded-0">
-				</section>
-			</div>
+
+			<section id="listado" class="bloque visible accordion alert alert-primary border-top-0 rounded-0">
+			</section>
+			<section id="clima" class="bloque accordion alert alert-primary border-top-0 rounded-0">
+			</section>
+
 		</main>
+<!-- FIN CONTENIDO DOM -->
 
 		<footer class=" container-fluid navbar fixed-bottom navbar-expand-sm bg-dark">
 			<p class="mb-0 px-3">Corral, Juan Manuel</p>
@@ -114,7 +116,7 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-							<button id="guardar" type="button" class="btn btn-primary" onclick="agregar()" data-dismiss="modal">Guardar</button>
+							<button id="guardar" type="button" class="btn btn-primary" onclick="agregar()" data-dismiss="modal" disabled="disabled">Guardar</button>
 						</div>
 					</div>
 				</div>
