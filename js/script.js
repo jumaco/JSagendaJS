@@ -45,10 +45,10 @@ function badge(el1, el2){
 // FILTRA DUPLICADOS DENTRO DE UN ARRAY.
 // -AL MOMENTO DE HACER UNA BUSQUEDA PUEDE TRAER DUPLICADOS.
 function filtrarDuplicado(arr){
-// SI EL ARRAY CONTIENE OBJETOS IGUALES LO OMITE EN UN NUEVO ARRAY.
+    // SI EL ARRAY CONTIENE OBJETOS IGUALES LO OMITE EN UN NUEVO ARRAY.
     let resultado = [];
     arr.forEach((item)=>{
-//RESULTADO[] INCLUYE YA AL ITEM? SI ES TRUE PUSHEA EL ITEM, PERO AL ESTAR NEGADO PUSHEA CUANDO NO LO INCLUYE.
+    //RESULTADO[] INCLUYE YA AL ITEM? SI ES TRUE PUSHEA EL ITEM, PERO AL ESTAR NEGADO PUSHEA CUANDO NO LO INCLUYE.
         if(!resultado.includes(item)){
             resultado.push(item);
         }
@@ -194,9 +194,9 @@ function validar(){
     for (let input of inputs) {
         // console.log(input.value);
         // console.log($(input).attr('id'));
-        if((($(input).attr('id')) == 'Input3') && (isNaN(parseInt($(input).val().trim())))) {
+        if((($(input).attr('type')) == 'tel') && (isNaN(parseInt($(input).val().trim())))) {
             $(input).addClass("border border-danger");
-        }else if((($(input).attr('id')) == 'Input4') && !reg.test($(input).val().trim()) ) {
+        }else if((($(input).attr('type')) == 'email') && !reg.test($(input).val().trim()) ) {
             $(input).addClass("border border-danger");
         }else if($(input).val().trim() == '' ){
             $(input).addClass("border border-danger");
@@ -204,9 +204,7 @@ function validar(){
             $(input).removeClass("border border-danger");
         };
     };
-    if (!inputs.hasClass('border-danger')){
-        $('#guardar').removeAttr("disabled");
-    };
+    !inputs.hasClass('border-danger') ? $('#guardar').removeAttr("disabled").removeClass("btn-secondary").addClass("btn-success") : $('#guardar').attr("disabled","disabled").removeClass("btn-success").addClass("btn-secondary");
 };
 
 // LLAMADO A FUNCION VALIDAR
@@ -216,107 +214,5 @@ $(inputs).blur(function(e){
     validar();
 })
 
-
-// addContact.onclick= () => {
-//     const labels = $("label");
-//     const inputs = $("form").find("input");
-//     console.log(inputs)
-//     console.log(labels)
-
-//     for (const input of inputs) {
-//         console.log(input)
-//         let valor = (input.$("input")).attr("id");
-//         console.log(valor)
-
-
-//     }
-// }
-
-// inputs.blur(function(e){
-//     e.preventDefault();
-//     let iden = $(this).attr("id");
-//     labels.filter(iden).addClass("border border-danger");
-//     $(e.target.parentNode).removeClass("alert-primary alert-secondary border-bottom-0").siblings().removeClass("alert-primary alert-secondary border-bottom-0");
-//     $(e.target.parentNode).addClass("alert-primary border-bottom-0").siblings().addClass("alert-secondary")
-// })
-
-
-// addContact.onclick= () => {
-//     let reg = /^[A-Z0-9._%+-]+@([A-Z0-9-]+.)+[A-Z]{2,4}$/i;
-
-//     console.log("corriendo validacion")
-//     $('#Input1').blur(function() {
-//         if($("#Input1").val().trim() == '' ){
-//             $(this).addClass("border border-danger");
-//         }else {
-//             $(this).removeClass("border border-danger");
-//             $('#guardar').removeAttr("disabled");
-//         }
-//     });
-//     $('#Input2').blur(function() {
-//         if($("#Input2").val().trim() == '' ){
-//             $(this).addClass("border border-danger");
-//             $('#guardar').attr("disabled","disabled");
-//         }else {
-//             $(this).removeClass("border border-danger");
-//             $('#guardar').removeAttr("disabled");
-//         }
-//     });
-
-//     $('#Input3').blur(function() {
-//         console.log (parseInt($("#Input3").val().trim()))
-
-//         if(($("#Input3").val().trim() == '') || (isNaN(parseInt($("#Input3").val().trim()))) ){
-//             $(this).addClass("border border-danger");
-//             $('#guardar').attr("disabled","disabled");
-//         }else {
-//             $(this).removeClass("border border-danger");
-//             $('#guardar').removeAttr("disabled");
-//         }
-//         })
-
-//     $('#Input4').blur(function() {
-//         if($("#Input4").val().trim() == '' ){
-//             $(this).addClass("border border-danger");
-//             $('#guardar').attr("disabled","disabled");
-//         }else {
-//             $(this).removeClass("border border-danger");
-//             $('#guardar').removeAttr("disabled");
-//         }
-//         })
-
-//     $('#Input4').blur(function() {
-//         mail = $("#Input4").val().trim()
-//         if(mail != '' && reg.test(mail)){
-//             $(this).removeClass("border border-danger");
-//             $('#guardar').removeAttr("disabled");
-//         }else {
-//             $(this).addClass("border border-danger");
-//             $('#guardar').attr("disabled","disabled");
-//         }
-//         })
-//     if (($("#Input1").val() == '')||($("#Input2").val() == '')||($("#Input3").val() == '')||($("#Input4").val() == '')) {
-//         $('#guardar').attr("disabled","disabled");
-//     }
-// }
-
-
-    // }else if(mail.trim() == '' ){
-    //     alert('Por favor, ingresa tu email.');
-    //     $('#Input4').focus();
-    //     return false;
-    // }else if(mail.trim() != '' && !reg.test(mail)){
-    //     alert('Por favor, ingresa un email válido.');
-    //     $('#Input4').focus();
-    //     return false;
-    // }else if(apellido.trim() == '' ){
-    //     alert('Por favor, ingresa un mensaje.');
-    //     $('#Input2').focus(); 
-    //     return false;
-    // }else{
-    //     $('#guardar').removeAttr("disabled");
-
-    // }
-
-
+// al hacer clic en cerrar modal limpiar al hacer click fuera del modal no hacer nada
 
