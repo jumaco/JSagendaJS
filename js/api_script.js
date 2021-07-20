@@ -1,4 +1,4 @@
-
+// CONSTANTES PARA ITERAR DATE
 const Meses = [
   "Enero",
   "Febrero",
@@ -13,7 +13,6 @@ const Meses = [
   "Noviembre",
   "Diciembre",
 ];
-
 const Dias = [
 "Domingo",
 "Lunes",
@@ -23,94 +22,107 @@ const Dias = [
 "Viernes",
 "Sábado"]
 
-// console.log(`${Dias[f.getDay()]} 18 de ${Meses[f.getMonth()]} `); // Devuelve el mes actual en formato de texto
+// DATE
+var f = new Date();
 
-const APIURL = "https://api.openweathermap.org/data/2.5/onecall?lat=-34.84&lon=-58.37&units=metric&appid=7f0a3742fd58ecbb39f4104f191a5716"; 
+// URL DE LA API OPENWEATHER
+const APIURL = "https://api.openweathermap.org/data/2.5/onecall?lat=-34.84&lon=-58.37&lang=sp&units=metric&appid=7f0a3742fd58ecbb39f4104f191a5716"; 
 
-// var misDatos ={};
-// var {current, minutely, hourly, daily, alerts} = misDatos
-
-// var current = {}
-// var minutely = []
-// var hourly = []
-// var daily = []
-// var alerts = []
-
-$("document").ready(function(){
-// console.log('ready')
-});
-
-
+// EVALÚO SI HAY DATOS EN LOCAL STORAGE, O SIN ESTAN ACTUALIZADOS A 10MIN MAX DE LA HORA ACTUAL, PARA RENDERIZAR O LLAMAR A LA API
 if ((JSON.parse(localStorage.getItem('rtaAPI'))) != null){
-		var misDatos = JSON.parse(localStorage.getItem('rtaAPI'));
-		var {current, minutely, hourly, daily, alerts} = misDatos;
-			if ((Date.now() - (misDatos.current.dt*1000)) > 600000) {
-				obtenerAPI();
-			}else{
-			renderCurrent()
-			badge(`CLIMA T ${current.temp}º ST ${current.feels_like}º`,temp)
-			}
+		let {current: {dt, temp, feels_like}} = JSON.parse(localStorage.getItem('rtaAPI'));
+		if ((Date.now() - (dt*1000)) > 600000) {
+			obtenerAPI();
+		}else{
+			renderCurrent();
+			badge(`CLIMA T ${temp}º ST ${feels_like}º`,idTemp);
+		}
 }else{
-	obtenerAPI()
+	obtenerAPI();
 };
 
+// OBTENGO DATOS DE API Y LOS ALMACENA EN LOCALSTORAGE Y EJECUTO RENDERCURRENT
 function obtenerAPI(){
 	$.get(APIURL, function (respuesta, estado){
-	// console.log(new Date(Date.now()))
 	if(estado === "success"){
-		let misDatos = respuesta;
-		localStorage.setItem('rtaAPI', JSON.stringify(misDatos));
-		let {current, minutely, hourly, daily, alerts} = misDatos;
-		// console.log('obtenido ' + new Date(misDatos.current.dt*1000));
+		localStorage.setItem('rtaAPI', JSON.stringify(respuesta));
+		let {current: {dt, temp, feels_like}} = respuesta;
 		clear(clima);
 		renderCurrent();
-		badge(`CLIMA T ${current.temp}º ST ${current.feels_like}º`,temp);
-		// 
-		}else{
-			// console.log('fail')
-		}
+		badge(`CLIMA T ${temp}º ST ${feels_like}º`,idTemp);
+		};
 	});
-	// console.log('obtenido' + new Date(misDatos.current.dt*1000));
 };
 
-
+// RENDERIZA TODA LA SECCION CLIMA A PARTIR DEL LOCAL STORAGE
 function renderCurrent(){
-	let misDatos = JSON.parse(localStorage.getItem('rtaAPI'));
-	let {current, minutely, hourly, daily, alerts} = misDatos;
-	// console.log(' render ' + new Date(misDatos.current.dt*1000))
+	let {timezone, current: {dt, temp, feels_like, weather, sunrise, sunset, pressure, humidity, dew_point}, daily, alerts} = JSON.parse(localStorage.getItem('rtaAPI'));
+	let [elem] = weather;
+	let {description, icon} = elem;
+	let timeZone = timezone.split('/');
+	let ciudad = timeZone[timeZone.length -1];
+	f = new Date();
+	let descripcion = description.charAt(0).toUpperCase()+description.slice(1);
+	let dateActualizacion = new Date(dt*1000);
+	let amanecer = new Date(sunrise*1000);
+	let atardecer = new Date(sunset*1000);
 	let card = document.createElement('article')
-	let dateActualizacion = new Date(current.dt*1000);
 	card.innerHTML =`
-					<div class="card text-center">
-						<div class="card-header">
-							<p class="text-muted mb-0 pb-0">Temperatura actual para</p
-							<h1>${misDatos.timezone}</h1>
-						</div>
-						<div class="card-body">
-							<h5 class="card-title">T: ${current.temp}ºC / ST: ${current.feels_like}ºC</h5>
-							<p class="card-text"></p>
-							<a id="actualizar" href="#" class="btn btn-primary">Actualizar</a>
-						</div>
-						<div class="card-footer text-muted text-small">
-							Actualizado el ${Dias[dateActualizacion.getDay()]} 
-							${dateActualizacion.getDate()} 
-							de ${Meses[dateActualizacion.getMonth()]} 
-							a las ${dateActualizacion.toLocaleTimeString()}
+					<div class="card">
+						<div class="card-group ">
+								<div class="card border-0 p-1">
+									<div class="card-header d-inline-flex justify-content-between">
+										<p class="text-muted mb-0 pb-0">${ciudad}</p>
+										<a id="actualizar" href="#" class="btn btn-sm btn-primary">Actualizar</a>
+									</div>
+										<div class="row">
+											<div class="card-body pt-1 pb-0">
+												<p class="m-0 p-0">
+												${Dias[dateActualizacion.getDay()]}
+												${dateActualizacion.getDate()} 
+												de ${Meses[dateActualizacion.getMonth()]} 
+												${f.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}hs
+												</p>
+
+												<div class="d-flex flex-column align-items-end mt-2">
+													<h1 class="card-title mb-0">${temp}ºC</h1>
+													<h6>ST: ${feels_like}ºC</h6>
+												</div>
+
+												<p class="m-0 p-0">Presión: ${pressure}hPa</p>
+												<p class="m-0 p-0">Humedad: ${humidity}%</p>
+												<p class="m-0 p-0">Punto de rocío: ${dew_point}ºc</p>
+
+											</div>
+											<div class="card-body text-center pt-1 pb-0">
+												<h3 class="card-title mt-2">${descripcion}</h3>
+												<img src="http://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}" width="100px">
+												<p class="card-title">
+													Amanecer ${amanecer.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} 
+													/ Atardecer ${atardecer.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+												</p>
+											</div>
+
+										</div>
+									<div class="card-footer text-muted text-small">
+										Actualizado el ${Dias[dateActualizacion.getDay()]} 
+										${dateActualizacion.getDate()} 
+										de ${Meses[dateActualizacion.getMonth()]} 
+										a las ${dateActualizacion.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+									</div>
+								</div>
 						</div>
 					</div>
+
 					`
-	clima.appendChild(card)
-
-	document.getElementById("actualizar").onclick = function(){ obtenerAPI();}
-
-	// console.log(daily)
-
+	clima.appendChild(card);
+	document.getElementById("actualizar").onclick = function(){ obtenerAPI()};
+// CREA DOM CAROUSEL PREVIO A LOS CAROUSEL-ITEM
 	let carrousel = document.createElement('article')
 	carrousel.className = "mt-3";
 	carrousel.innerHTML =`
 						<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="3000">
 							<div id="carouselInner" class="carousel-inner">
-								
 							</div>
 							<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
 								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -122,33 +134,44 @@ function renderCurrent(){
 							</a>
 						</div>
 					`
-	clima.appendChild(carrousel)
-
+	clima.appendChild(carrousel);
+// MEDIANTE forEach CREO LOS CAROUSEL-ITEM DEL CAROUSEL
 	daily.forEach(list => {
-		let card = document.createElement('div')
-		let fecha = new Date(list.dt*1000)
+		descriptionDaily = list.weather[0].description;
+		descripcionDaily = descriptionDaily.charAt(0).toUpperCase()+descriptionDaily.slice(1);
+		let card = document.createElement('div');
+		let fecha = new Date(list.dt*1000);
 		card.className = "carousel-item";
-		card.innerHTML =
-						`
+		card.innerHTML =`
 							<div class="card d-block ">
-								<div class="card-body text-center">
-									<h6 class="card-subtitle mb-2 text-muted">Previsión para el</>
-									<h6 class="card-subtitle mb-2 text-muted">
+								<div class="card-body">
+									<h6 class="card-title">
 										${Dias[fecha.getDay()]} 
 										${fecha.getDate()} 
 										de ${Meses[fecha.getMonth()]} 
 										a las ${fecha.toLocaleTimeString()}
-										</h6>
-									<h5 class="card-title">${list.temp.day}ºC</h5>
-									<p class="card-text">Este es el carrousel</p>
-
+									</h6>
+									<div class="row">
+										<div class="card-body text-center pt-1 pb-0">
+											<p class="m-0 p-0">${descripcionDaily}</p>
+											<img src="http://openweathermap.org/img/wn/${list.weather[0].icon}@2x.png" alt="${list.weather.description}" width="100px">
+											<h5 class="card-title">${list.temp.day}ºC</h5>
+										</div>
+										<div class="card-body pt-1 pb-0">
+											<p class="m-0 p-0">Sensación Termica: ${list.feels_like.day}ºc</p>
+											<p class="m-0 p-0">Amanecer: ${list.sunrise}</p>
+											<p class="m-0 p-0">Atardecer: ${list.sunset}</p>
+											<p class="m-0 p-0">Presión: ${list.pressure}hPa</p> 
+											<p class="m-0 p-0">Humedad: ${list.humidity}%</p> 
+											<p class="m-0 p-0">Punto de rocío: ${list.dew_point}ºc</p> 
+										</div>	
+									</div>										
+											<p class="card-text text-center">
+											</p>
 								</div>
 							</div>
 						`
 		carouselInner.appendChild(card);
-	
 	});
-
 	$('#carouselInner div').first().addClass('active');
-
 };
