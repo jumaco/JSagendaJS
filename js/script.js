@@ -1,18 +1,24 @@
 // ARRAY DE MUESTRA
-ej = [{id: "0", nombre: "Tus Contactos (Crea uno, dos, tres...", apellido: "Así aparecerán", telefono:"1122334455", mail: "nuevo@contacto.com"}];
-
+ej1 = [{id: "0", nombre: " serán almacenados localmente.)", apellido: "Aquí aparecerán tus contactos (Pruébalo", telefono:"1122334455", mail: "nuevo@contacto.com"}];
+ej2 = [{id: "0", nombre: " crea uno nuevo.", apellido: "Has borrado el último contacto", telefono:"1122334455", mail: "nuevo@contacto.com"}];
 
 // COMPRUEBA LOCALSTORAGE SI EXISTEN CONTACTOS PREVIOS Y LOS ALMACENA EN UNA VARIABLE, SI NO CREA UN LISTA NUEVA ARRAY.
+// COMPRUEBA LOCALSTORAGE SI EXISTEN CONTACTOS PREVIOS Y LOS ALMACENA EN UNA VARIABLE, SI NO CREA UN LISTA NUEVA ARRAY.
 if ((JSON.parse(localStorage.getItem('listaContactos'))) != null){
+	if ((JSON.parse(localStorage.getItem('listaContactos'))).length != 0 ){
 		var listaContactos = JSON.parse(localStorage.getItem('listaContactos'));
 	//A PARTIR DE LISTA ENCONTRADA FILTRA REPETIDOS
 		let aMostrar = filtrarDuplicado(listaContactos);
 	// A PARTIR DE LA LISTA ENCONTRADA MUESTRA EN DOM
 		render(aMostrar);
 		badge(`CONTACTOS ${listaContactos.length}`,nroContac);
+	}else{
+		var listaContactos = [];
+		render(ej2);
+	}
 }else{
 		var listaContactos = [];
-		render(ej)
+		render(ej1);
 };
 
 // MUESTRA U OCULTA UNA SECCIÓN.
@@ -173,6 +179,9 @@ function buscar(){
 // LA FUNCION ESTA INTEGRADA EN EL HTML AL PRESIONAR VER CONTACTOS, LIMPIA Y RENDERIZA LA LISTA
 function mostrasLista() {
 	clear(agendados);
+	if(listaContactos.length == 0){
+		render(ej2)
+	};
 	render(listaContactos);
 };
 
@@ -184,6 +193,9 @@ function eliminarContac (desdeIndex){
 	localStorage.setItem ('listaContactos', JSON.stringify(listaContactos));
 	clear(agendados);
 	badge(`CONTACTOS ${listaContactos.length}`,nroContac);
+	if(listaContactos.length == 0){
+		render(ej2)
+	};
 	render(listaContactos);
 	$("#respuestaGuardado").prepend(`<button id="eliminado" type="button" class="btn btn-danger">Contacto Eliminado</button>`);
 	$("#eliminado").fadeOut(4000);

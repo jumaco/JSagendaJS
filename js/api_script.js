@@ -139,6 +139,8 @@ function renderCurrent(){
 	daily.forEach(list => {
 		descriptionDaily = list.weather[0].description;
 		descripcionDaily = descriptionDaily.charAt(0).toUpperCase()+descriptionDaily.slice(1);
+		sunriseDaily = new Date(list.sunrise*1000);
+		sunsetDaily = new Date(list.sunset*1000)
 		let card = document.createElement('div');
 		let fecha = new Date(list.dt*1000);
 		card.className = "carousel-item";
@@ -159,8 +161,8 @@ function renderCurrent(){
 										</div>
 										<div class="card-body pt-1 pb-0">
 											<p class="m-0 p-0">Sensación Termica: ${list.feels_like.day}ºc</p>
-											<p class="m-0 p-0">Amanecer: ${list.sunrise}</p>
-											<p class="m-0 p-0">Atardecer: ${list.sunset}</p>
+											<p class="m-0 p-0">Amanecer: ${sunriseDaily.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+											<p class="m-0 p-0">Atardecer: ${sunsetDaily.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
 											<p class="m-0 p-0">Presión: ${list.pressure}hPa</p> 
 											<p class="m-0 p-0">Humedad: ${list.humidity}%</p> 
 											<p class="m-0 p-0">Punto de rocío: ${list.dew_point}ºc</p> 
